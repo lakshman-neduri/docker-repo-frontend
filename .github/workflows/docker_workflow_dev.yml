@@ -1,0 +1,17 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  docker-build:
+    uses: lakshman-neduri/reusable-workflows/.github/workflows/docker-resuable-action.yml@main
+
+    with:
+      env: dev
+      aws_region: "us-east-1"
+      ecr_repository: "frontend-poc-dev"
+      dockerfile: flask-poc/Dockerfile
