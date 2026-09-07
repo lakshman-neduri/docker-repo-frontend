@@ -16,7 +16,7 @@ jobs:
       env: dev
       aws_region: "us-east-1"
       ecr_repository: "frontend-poc-dev"
-      dockerfile: flask-poc/Dockerfile
+      dockerfile: Dockerfile
       docker_context: flask-poc
     secrets:
       iam_role: ${{ secrets.IAM_ROLE }}
