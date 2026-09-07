@@ -1,5 +1,8 @@
 name: Build and Push Docker Image
 
+permissions:
+  contents: read
+  id-token: write
 on:
   push:
     branches:
@@ -9,9 +12,11 @@ on:
 jobs:
   docker-build:
     uses: lakshman-neduri/reusable-workflows/.github/workflows/docker-resuable-action.yml@main
-
     with:
       env: dev
       aws_region: "us-east-1"
       ecr_repository: "frontend-poc-dev"
       dockerfile: flask-poc/Dockerfile
+    secrets:
+      iam_role: ${{ secrets.IAM_ROLE }}
+
