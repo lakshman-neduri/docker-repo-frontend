@@ -20,7 +20,7 @@ jobs:
     uses: lakshman-neduri/reusable-workflows/.github/workflows/snyk-python-scan.yml@main
     with:
       snyk_org_id: ${{ vars.SNYK_ORG }}
-      error-flag: ${{ inputs.error-flag || 'false' }}
+      error-flag: ${{ inputs.error-flag || false }}
       snyk_severity_threshold: high
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
