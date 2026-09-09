@@ -11,8 +11,9 @@ on:
     inputs:
       error-flag:
         description: 'Error flag to simulate a failure in the workflow'
+        required: false
         type: boolean
-        default: false
+        default: true
 
 jobs:
   snyk-scan:
