@@ -8,12 +8,18 @@ on:
     branches:
       - main
   workflow_dispatch:
+    error-flag:
+      description: 'Error flag to simulate a failure in the workflow'
+      type: boolean
+      default: false
 
 jobs:
   snyk-scan:
     uses: lakshman-neduri/reusable-workflows/.github/workflows/snyk-python-scan.yml@main
     with:
       snyk_org_id: ${{ vars.SNYK_ORG }}
+      error-flag: ${{ inputs.error-flag }}
+      snyk_severity_threshold: low
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
