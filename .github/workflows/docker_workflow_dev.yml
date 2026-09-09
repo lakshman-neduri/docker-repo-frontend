@@ -10,7 +10,15 @@ on:
   workflow_dispatch:
 
 jobs:
+  snyk-scan:
+    uses: lakshman-neduri/reusable-workflows/.github/workflows/snyk-python-scan.yml@main
+    with:
+      snyk_org_id: ${{ vars.SNYK_ORG }}
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
   docker-build:
+    needs: snyk-scan
     uses: lakshman-neduri/reusable-workflows/.github/workflows/docker-resuable-action.yml@main
     with:
       env: dev
