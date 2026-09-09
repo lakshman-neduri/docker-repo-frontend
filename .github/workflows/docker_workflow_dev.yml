@@ -1,17 +1,39 @@
 name: Build and Push Docker Image
 
+permissions:
+  contents: read
+  id-token: write
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      error-flag:
+        description: 'Error flag to simulate a failure in the workflow'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
-  docker-build:
-    uses: lakshman-neduri/reusable-workflows/.github/workflows/docker-resuable-action.yml@main
+  snyk-scan:
+    uses: lakshman-neduri/reusable-workflows/.github/workflows/snyk-python-scan.yml@main
+    with:
+      snyk_org_id: ${{ vars.SNYK_ORG }}
+      error-flag: ${{ inputs.error-flag }}
+      snyk_severity_threshold: high
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
+  docker-build:
+    needs: snyk-scan
+    uses: lakshman-neduri/reusable-workflows/.github/workflows/docker-resuable-action.yml@main
     with:
       env: dev
       aws_region: "us-east-1"
       ecr_repository: "frontend-poc-dev"
-      dockerfile: flask-poc/Dockerfile
+      dockerfile: Dockerfile
+      docker_context: flask-poc
+    secrets:
+      iam_role: ${{ secrets.IAM_ROLE }}
+
