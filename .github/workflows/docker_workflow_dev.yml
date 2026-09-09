@@ -8,10 +8,11 @@ on:
     branches:
       - main
   workflow_dispatch:
-    error-flag:
-      description: 'Error flag to simulate a failure in the workflow'
-      type: boolean
-      default: false
+    inputs:
+      error-flag:
+        description: 'Error flag to simulate a failure in the workflow'
+        type: boolean
+        default: false
 
 jobs:
   snyk-scan:
